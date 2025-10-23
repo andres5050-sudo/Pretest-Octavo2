@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Pretest Operaciones Matemáticas - Grado Octavo</title>
+    <style>
+        body {
+            font-family: 'Orbitron', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a4a);
+            color: #e0e0ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative; /* Importante para que los fixed children se posicionen correctamente */
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            padding: 40px;
+            background: rgba(15, 15, 40, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 165, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ffd700;
+            z-index: 10; /* Asegura que el contenido esté sobre las animaciones */
+        }
+
+        .neon-title {
+            text-align: center;
+            font-size: 2.8em;
+            color: #ff4500;
+            text-shadow: 0 0 15px #ff4500, 0 0 30px #ffd700;
+            margin-bottom: 30px;
+            animation: neonPulse 2s infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from { text-shadow: 0 0 10px #ff4500, 0 0 20px #ffd700; }
+            to { text-shadow: 0 0 20px #ff4500, 0 0 40px #ffd700; }
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #d3d3d3;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #ffd700;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(20, 20, 50, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #e0e0ff;
+            font-weight: 600;
+            text-shadow: 0 0 3px #ffd700;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(30, 30, 60, 0.5);
+            color: #e0e0ff;
+            font-size: 1.1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #ff4500;
+            box-shadow: 0 0 15px #ff4500;
+            outline: none;
+        }
+
+        .question-page {
+            display: none;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(20, 20, 50, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .question-page.active {
+            display: block;
+        }
+
+        .question h3 {
+            font-size: 1.6em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ffa500;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 0.2em;
+        }
+
+        .fraction .numerator {
+            display: block;
+            border-bottom: 1px solid #e0e0ff;
+            font-size: 0.8em;
+        }
+
+        .fraction .denominator {
+            display: block;
+            font-size: 0.8em;
+        }
+
+        .options label {
+            display: block;
+            margin: 15px 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .options label:hover {
+            color: #ff4500;
+            transform: scale(1.05);
+        }
+
+        input[type="radio"] {
+            accent-color: #ff4500;
+            margin-right: 10px;
+            transform: scale(1.2);
+            transition: transform 0.3s;
+        }
+
+        input[type="radio"]:checked + span {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .next-btn {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff4500, #ffd700);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 5px #ffffff;
+            margin-top: 20px;
+            animation: pulseButton 1.5s infinite;
+        }
+
+        @keyframes pulseButton {
+            0% { transform: scale(1); box-shadow: 0 0 10px #ff4500; }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px #ffd700; }
+            100% { transform: scale(1); box-shadow: 0 0 10px #ff4500; }
+        }
+
+        .next-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px #ff4500, 0 0 80px #ffd700;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 5px #ffffff;
+            animation: pulseButton 1.5s infinite;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px #ffd700, 0 0 80px #ff4500;
+        }
+
+        #result {
+            margin-top: 40px;
+            padding: 25px;
+            background: rgba(20, 20, 50, 0.9);
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #result h2 {
+            color: #ffd700;
+            font-size: 2.2em;
+            text-shadow: 0 0 15px #ffa500;
+        }
+
+        #result p {
+            font-size: 1.3em;
+            color: #d3d3d3;
+            margin: 10px 0;
+        }
+        
+        .result-detail-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            font-size: 1em;
+            text-align: left;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .result-detail-table th, .result-detail-table td {
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .result-detail-table th {
+            background: #ff4500;
+            color: #ffffff;
+            text-shadow: none;
+        }
+        .result-detail-table td {
+            background: rgba(30, 30, 60, 0.7);
+        }
+        .correct-answer {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .incorrect-answer {
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+
+        /* Animación de estrellas y símbolos matemáticos - CORREGIDA */
+        .star-effect, .math-symbol {
+            position: fixed; /* Posición fija para que no afecte el scroll del contenido principal */
+            top: -50px; /* Inician fuera de la vista superior */
+            animation: fall linear infinite;
+            pointer-events: none; /* No interactúan con el ratón */
+        }
+
+        .star-effect {
+            width: 5px;
+            height: 5px;
+            background: #ff4500;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        .math-symbol {
+            font-size: 1.5em;
+            color: #ffd700;
+            opacity: 0.6;
+            font-weight: bold;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0vh) scale(1); opacity: 0.7; }
+            100% { transform: translateY(105vh) scale(0.5); opacity: 0; }
+        }
+
+        .instructions {
+            display: none;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(20, 20, 50, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            text-align: center;
+            color: #e0e0ff;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #ffd700;
+        }
+
+        .instructions.active {
+            display: block;
+        }
+        
+        .screenshot-instruction {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 0, 0.1); 
+            border: 2px dashed #ffd700;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .email-submit-btn {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ffd700, #ff4500);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 5px #ffffff;
+        }
+
+        .email-submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        #thank-you-message {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+
+        #thank-you-message h3 {
+            color: #00ff00;
+            font-size: 2em;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 10px;
+        }
+
+        #thank-you-message p {
+            color: #e0e0ff;
+            font-size: 1.2em;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="neon-title">Pretest Operaciones Matemáticas</h1>
+        <p class="subtitle">Grado Octavo: Enteros y Fracciones - Calcula cada operación en una hoja y elige la respuesta correcta.</p>
+
+        <div id="info-form">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" required placeholder="Escribe tu nombre">
+            </div>
+            <div class="form-group">
+                <label for="course">Curso:</label>
+                <input type="text" id="course" required placeholder="Ej: 8-01">
+            </div>
+            <div class="form-group">
+                <label for="age">Edad:</label>
+                <input type="number" id="age" required placeholder="Ej: 13">
+            </div>
+            <div class="form-group">
+                <label for="school">Colegio:</label>
+                <input type="text" id="school" required placeholder="Nombre del colegio">
+            </div>
+            <button class="start-btn" onclick="startQuiz()">¡Ver Instrucciones!</button>
+        </div>
+
+        <div id="instructions" class="instructions">
+            <h3>Instrucciones para la Prueba</h3>
+            <p>Bienvenido/a a tu pretest de operaciones matemáticas. Aquí encontrarás:</p>
+            <ul>
+                <li>**15 preguntas** sobre enteros, jerarquía de operaciones y fracciones.</li>
+                <li>Debes calcular cada operación en una hoja y seleccionar la respuesta correcta (a, b, c o d).</li>
+                <li>Usa el botón "Siguiente Pregunta ➡️" para avanzar.</li>
+                <li>Al finalizar, presiona "Enviar Respuestas 🚀" para ver tu calificación y enviar la retroalimentación detallada por correo.</li>
+                <li>¡Tómate tu tiempo y asegúrate de responder todo!</li>
+            </ul>
+            <button class="start-btn" onclick="showFirstQuestion()">¡Empezar Ahora!</button>
+        </div>
+
+        <div id="quiz-container" style="display: none;">
+            <div id="q1" class="question-page">
+                <div class="question">
+                    <h3>1. Calcula: 5 + (-3)</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="a" onclick="showNextButton(1)"><span>a) 8</span></label>
+                        <label><input type="radio" name="q1" value="b" onclick="showNextButton(1)"><span>b) 2</span></label>
+                        <label><input type="radio" name="q1" value="c" onclick="showNextButton(1)"><span>c) -2</span></label>
+                        <label><input type="radio" name="q1" value="d" onclick="showNextButton(1)"><span>d) -8</span></label>
+                    </div>
+                </div>
+                <button id="next-1" class="next-btn" onclick="nextQuestion(1)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q2" class="question-page">
+                <div class="question">
+                    <h3>2. Calcula: -7 - 4</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="a" onclick="showNextButton(2)"><span>a) -3</span></label>
+                        <label><input type="radio" name="q2" value="b" onclick="showNextButton(2)"><span>b) 3</span></label>
+                        <label><input type="radio" name="q2" value="c" onclick="showNextButton(2)"><span>c) -11</span></label>
+                        <label><input type="radio" name="q2" value="d" onclick="showNextButton(2)"><span>d) 11</span></label>
+                    </div>
+                </div>
+                <button id="next-2" class="next-btn" onclick="nextQuestion(2)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q3" class="question-page">
+                <div class="question">
+                    <h3>3. Calcula: (-4) × 5</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="a" onclick="showNextButton(3)"><span>a) 20</span></label>
+                        <label><input type="radio" name="q3" value="b" onclick="showNextButton(3)"><span>b) -20</span></label>
+                        <label><input type="radio" name="q3" value="c" onclick="showNextButton(3)"><span>c) 9</span></label>
+                        <label><input type="radio" name="q3" value="d" onclick="showNextButton(3)"><span>d) -9</span></label>
+                    </div>
+                </div>
+                <button id="next-3" class="next-btn" onclick="nextQuestion(3)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q4" class="question-page">
+                <div class="question">
+                    <h3>4. Calcula: -24 ÷ 6</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="a" onclick="showNextButton(4)"><span>a) 4</span></label>
+                        <label><input type="radio" name="q4" value="b" onclick="showNextButton(4)"><span>b) -4</span></label>
+                        <label><input type="radio" name="q4" value="c" onclick="showNextButton(4)"><span>c) 30</span></label>
+                        <label><input type="radio" name="q4" value="d" onclick="showNextButton(4)"><span>d) -30</span></label>
+                    </div>
+                </div>
+                <button id="next-4" class="next-btn" onclick="nextQuestion(4)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q5" class="question-page">
+                <div class="question">
+                    <h3>5. Calcula: 10 - (4 × 2)</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="a" onclick="showNextButton(5)"><span>a) 2</span></label>
+                        <label><input type="radio" name="q5" value="b" onclick="showNextButton(5)"><span>b) 18</span></label>
+                        <label><input type="radio" name="q5" value="c" onclick="showNextButton(5)"><span>c) 6</span></label>
+                        <label><input type="radio" name="q5" value="d" onclick="showNextButton(5)"><span>d) 12</span></label>
+                    </div>
+                </div>
+                <button id="next-5" class="next-btn" onclick="nextQuestion(5)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q6" class="question-page">
+                <div class="question">
+                    <h3>6. Calcula: -15 + [8 × (-2) + 5]</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="a" onclick="showNextButton(6)"><span>a) -26</span></label>
+                        <label><input type="radio" name="q6" value="b" onclick="showNextButton(6)"><span>b) -11</span></label>
+                        <label><input type="radio" name="q6" value="c" onclick="showNextButton(6)"><span>c) 1</span></label>
+                        <label><input type="radio" name="q6" value="d" onclick="showNextButton(6)"><span>d) -1</span></label>
+                    </div>
+                </div>
+                <button id="next-6" class="next-btn" onclick="nextQuestion(6)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q7" class="question-page">
+                <div class="question">
+                    <h3>7. Calcula: -29 + [5 - [15 + 7 × (3 - 6) + (-3 - 5)]]</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="a" onclick="showNextButton(7)"><span>a) -50</span></label>
+                        <label><input type="radio" name="q7" value="b" onclick="showNextButton(7)"><span>b) -10</span></label>
+                        <label><input type="radio" name="q7" value="c" onclick="showNextButton(7)"><span>c) -21</span></label>
+                        <label><input type="radio" name="q7" value="d" onclick="showNextButton(7)"><span>d) -15</span></label>
+                    </div>
+                </div>
+                <button id="next-7" class="next-btn" onclick="nextQuestion(7)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q8" class="question-page">
+                <div class="question">
+                    <h3>8. Calcula: <span class="fraction"><span class="numerator">1</span><span class="denominator">3</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">6</span></span></h3>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="a" onclick="showNextButton(8)"><span>a) <span class="fraction"><span class="numerator">2</span><span class="denominator">9</span></span></span></label>
+                        <label><input type="radio" name="q8" value="b" onclick="showNextButton(8)"><span>b) <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></span></label>
+                        <label><input type="radio" name="q8" value="c" onclick="showNextButton(8)"><span>c) <span class="fraction"><span class="numerator">3</span><span class="denominator">6</span></span></span></label>
+                        <label><input type="radio" name="q8" value="d" onclick="showNextButton(8)"><span>d) <span class="fraction"><span class="numerator">1</span><span class="denominator">9</span></span></span></label>
+                    </div>
+                </div>
+                <button id="next-8" class="next-btn" onclick="nextQuestion(8)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q9" class="question-page">
+                <div class="question">
+                    <h3>9. Calcula: <span class="fraction"><span class="numerator">5</span><span class="denominator">8</span></span> - <span class="fraction"><span class="numerator">1</span><span class="denominator">8</span></span></h3>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="a" onclick="showNextButton(9)"><span>a) <span class="fraction"><span class="numerator">4</span><span class="denominator">8</span></span></span></label>
+                        <label><input type="radio" name="q9" value="b" onclick="showNextButton(9)"><span>b) <span class="fraction"><span class="numerator">6</span><span class="denominator">8</span></span></span></label>
+                        <label><input type="radio" name="q9" value="c" onclick="showNextButton(9)"><span>c) <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></span></label>
+                        <label><input type="radio" name="q9" value="d" onclick="showNextButton(9)"><span>d) 0</span></label>
+                    </div>
+                </div>
+                <button id="next-9" class="next-btn" onclick="nextQuestion(9)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q10" class="question-page">
+                <div class="question">
+                    <h3>10. Calcula: <span class="fraction"><span class="numerator">2</span><span class="denominator">5</span></span> × <span class="fraction"><span class="numerator">3</span><span class="denominator">4</span></span></h3>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="a" onclick="showNextButton(10)"><span>a) <span class="fraction"><span class="numerator">6</span><span class="denominator">20</span></span></span></label>
+                        <label><input type="radio" name="q10" value="b" onclick="showNextButton(10)"><span>b) <span class="fraction"><span class="numerator">3</span><span class="denominator">10</span></span></span></label>
+                        <label><input type="radio" name="q10" value="c" onclick="showNextButton(10)"><span>c) <span class="fraction"><span class="numerator">5</span><span class="denominator">9</span></span></span></label>
+                        <label><input type="radio" name="q10" value="d" onclick="showNextButton(10)"><span>d) <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></span></label>
+                    </div>
+                </div>
+                <button id="next-10" class="next-btn" onclick="nextQuestion(10)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q11" class="question-page">
+                <div class="question">
+                    <h3>11. Calcula: <span class="fraction"><span class="numerator">3</span><span class="denominator">7</span></span> ÷ <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></h3>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="a" onclick="showNextButton(11)"><span>a) <span class="fraction"><span class="numerator">6</span><span class="denominator">7</span></span></span></label>
+                        <label><input type="radio" name="q11" value="b" onclick="showNextButton(11)"><span>b) <span class="fraction"><span class="numerator">3</span><span class="denominator">14</span></span></span></label>
+                        <label><input type="radio" name="q11" value="c" onclick="showNextButton(11)"><span>c) <span class="fraction"><span class="numerator">3</span><span class="denominator">2</span></span></span></label>
+                        <label><input type="radio" name="q11" value="d" onclick="showNextButton(11)"><span>d) <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></span></label>
+                    </div>
+                </div>
+                <button id="next-11" class="next-btn" onclick="nextQuestion(11)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q12" class="question-page">
+                <div class="question">
+                    <h3>12. Calcula (usa MCM): <span class="fraction"><span class="numerator">1</span><span class="denominator">4</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">6</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">12</span></span></h3>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="a" onclick="showNextButton(12)"><span>a) <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span></span></label>
+                        <label><input type="radio" name="q12" value="b" onclick="showNextButton(12)"><span>b) <span class="fraction"><span class="numerator">3</span><span class="denominator">12</span></span></span></label>
+                        <label><input type="radio" name="q12" value="c" onclick="showNextButton(12)"><span>c) <span class="fraction"><span class="numerator">5</span><span class="denominator">12</span></span></span></label>
+                        <label><input type="radio" name="q12" value="d" onclick="showNextButton(12)"><span>d) <span class="fraction"><span class="numerator">7</span><span class="denominator">12</span></span></span></label>
+                    </div>
+                </div>
+                <button id="next-12" class="next-btn" onclick="nextQuestion(12)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q13" class="question-page">
+                <div class="question">
+                    <h3>13. Calcula: (<span class="fraction"><span class="numerator">3</span><span class="denominator">4</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">2</span></span>) × (<span class="fraction"><span class="numerator">2</span><span class="denominator">3</span></span> - <span class="fraction"><span class="numerator">1</span><span class="denominator">6</span></span>)</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q13" value="a" onclick="showNextButton(13)"><span>a) <span class="fraction"><span class="numerator">5</span><span class="denominator">4</span></span></span></label>
+                        <label><input type="radio" name="q13" value="b" onclick="showNextButton(13)"><span>b) <span class="fraction"><span class="numerator">15</span><span class="denominator">12</span></span></span></label>
+                        <label><input type="radio" name="q13" value="c" onclick="showNextButton(13)"><span>c) <span class="fraction"><span class="numerator">5</span><span class="denominator">6</span></span></span></label>
+                        <label><input type="radio" name="q13" value="d" onclick="showNextButton(13)"><span>d) 1</span></label>
+                    </div>
+                </div>
+                <button id="next-13" class="next-btn" onclick="nextQuestion(13)">Siguiente Pregunta ➡️</button>
+            </div>
+
+            <div id="q14" class="question-page">
+                <div class="question">
+                    <h3>14. Calcula: (<span class="fraction"><span class="numerator">5</span><span class="denominator">6</span></span> × <span class="fraction"><span class="numerator">2</span><span class="denominator">5</span></span>) - (<span class="fraction"><span class="numerator">1</span><span class="denominator">3</span></span> ÷ <span class="fraction"><span class="numerator">3</span><span class="denominator">4</span></span>)</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="a" onclick="showNextButton(14)"><span>a) <span class="fraction"><span class="numerator">1</span><span class="denominator">3</span></span></span></label>
+                        <label><input type="radio" name="q14" value="b" onclick="showNextButton(14)"><span>b) -<span class="fraction"><span class="numerator">1</span><span class="denominator">15</span></span></span></label>
+                        <label><input type="radio" name="q14" value="c" onclick="showNextButton(14)"><span>c) <span class="fraction"><span class="numerator">1</span><span class="denominator">15</span></span></span></label>
+                        <label><input type="radio" name="q14" value="d" onclick="showNextButton(14)"><span>d) -<span class="fraction"><span class="numerator">1</span><span class="denominator">3</span></span></span></label>
+                    </div>
+                </div>
+                <button id="next-14" class="next-btn" onclick="nextQuestion(14)">Siguiente Pregunta ➡️</button>
+            </div>
+            
+            <div id="q15" class="question-page">
+                <div class="question">
+                    <h3>15. Calcula: {[(-30 + 3) + 8] × (-12)} ÷ [-(5 + 9 - 10)]</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q15" value="a" onclick="showNextButton(15)"><span>a) 228</span></label>
+                        <label><input type="radio" name="q15" value="b" onclick="showNextButton(15)"><span>b) -228</span></label>
+                        <label><input type="radio" name="q15" value="c" onclick="showNextButton(15)"><span>c) 57</span></label>
+                        <label><input type="radio" name="q15" value="d" onclick="showNextButton(15)"><span>d) -57</span></label>
+                    </div>
+                </div>
+                <button id="next-15" class="next-btn" onclick="nextQuestion(15)">Enviar Respuestas 🚀</button>
+            </div>
+        </div>
+
+       <div id="result" style="display:none;">
+            <h2>Resultados del Pretest</h2>
+            <p id="student-info"></p>
+            <p id="score"></p>
+            <div id="detailed-results">
+                </div>
+             
+            <div class="screenshot-instruction">
+                ⚠️ **INSTRUCCIÓN IMPORTANTE:** Por favor, toma un **pantallazo** (captura de pantalla) de esta ventana de resultados **ANTES** de hacer click en el botón de abajo. Adjunta el pantallazo al correo.
+            </div>
+
+            <button id="submit-email-btn" class="email-submit-btn" onclick="prepareMailBody()">Enviar Resultados por Correo 📧</button>
+
+            <div id="thank-you-message" style="display: none;">
+                <h3>¡Gracias! 🎉</h3>
+                <p>Se abrirá tu programa de correo. **Recuerda adjuntar el pantallazo** antes de enviar.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TOTAL_QUESTIONS = 15;
+        let answers = {};
+        let currentQuestion = 1;
+
+        // Data de las 15 preguntas seleccionadas
+        const ALL_QUESTIONS_DATA = [
+            // Enteros
+            { q: 'q1', text: '5 + (-3)', correct: 'b', optionText: {a: '8', b: '2', c: '-2', d: '-8'} },
+            { q: 'q2', text: '-7 - 4', correct: 'c', optionText: {a: '-3', b: '3', c: '-11', d: '11'} },
+            { q: 'q3', text: '(-4) × 5', correct: 'b', optionText: {a: '20', b: '-20', c: '9', d: '-9'} },
+            { q: 'q4', text: '-24 ÷ 6', correct: 'b', optionText: {a: '4', b: '-4', c: '30', d: '-30'} },
+            { q: 'q5', text: '10 - (4 × 2)', correct: 'a', optionText: {a: '2', b: '18', c: '6', d: '12'} },
+            { q: 'q6', text: '-15 + [8 × (-2) + 5]', correct: 'a', optionText: {a: '-26', b: '-11', c: '1', d: '-1'} },
+            // Fracciones
+            { q: 'q7', text: '-29 + [5 - [15 + 7 × (3 - 6) + (-3 - 5)]]', correct: 'b', optionText: {a: '-50', b: '-10', c: '-21', d: '-15'} },
+            { q: 'q8', text: '1/3 + 1/6', correct: 'b', optionText: {a: '2/9', b: '1/2', c: '3/6', d: '1/9'} },
+            { q: 'q9', text: '5/8 - 1/8', correct: 'a', optionText: {a: '4/8', b: '6/8', c: '1/2', d: '0'} },
+            { q: 'q10', text: '2/5 × 3/4', correct: 'a', optionText: {a: '6/20', b: '3/10', c: '5/9', d: '1/2'} },
+            { q: 'q11', text: '3/7 ÷ 1/2', correct: 'a', optionText: {a: '6/7', b: '3/14', c: '3/2', d: '1/2'} },
+            { q: 'q12', text: '1/4 + 1/6 + 1/12', correct: 'a', optionText: {a: '1/2', b: '3/12', c: '5/12', d: '7/12'} },
+            // Jerarquía con Fracciones
+            { q: 'q13', text: '(3/4 + 1/2) × (2/3 - 1/6)', correct: 'c', optionText: {a: '5/4', b: '15/12', c: '5/6', d: '1'} },
+            { q: 'q14', text: '(5/6 × 2/5) - (1/3 ÷ 3/4)', correct: 'b', optionText: {a: '1/3', b: '-1/15', c: '1/15', d: '-1/3'} },
+            // Jerarquía Compleja
+            { q: 'q15', text: '{[(-30 + 3) + 8] × (-12)} ÷ [-(5 + 9 - 10)]', correct: 'c', optionText: {a: '228', b: '-228', c: '57', d: '-57'} },
+        ];
+
+        // Mapea la letra de la opción con el texto de la opción para la retroalimentación
+        function getOptionText(qKey, optionValue) {
+            const data = ALL_QUESTIONS_DATA.find(q => q.q === qKey);
+            if (data && data.optionText) {
+                return data.optionText[optionValue];
+            }
+            return 'N/A';
+        }
+
+        // Generar estrellas y símbolos matemáticos dinámicos
+        function createParticle() {
+            const particle = document.createElement('div');
+            const isStar = Math.random() > 0.5;
+            particle.className = isStar ? 'star-effect' : 'math-symbol';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = Math.random() * 3 + 2 + 's';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            
+            // Algunos símbolos adelante, otros atrás (aleatorio)
+            particle.style.zIndex = Math.random() > 0.5 ? '1' : '100';
+            
+            if (!isStar) {
+                const symbols = ['+', '-', '×', '÷', '=', '∞', '∑', 'π'];
+                particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            }
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 5000);
+        }
+        setInterval(createParticle, 300);
+
+        window.onload = function() {
+            // Bloqueo de teclas y navegación
+            document.addEventListener('keydown', function(event) {
+                // Deshabilitar F5 y Ctrl/Cmd+R
+                if (event.key === 'F5' || ((event.ctrlKey || event.metaKey) && event.key === 'r')) {
+                    event.preventDefault();
+                    alert('⚠️ La actualización de la página está bloqueada durante el pretest.');
+                }
+            });
+
+            // Deshabilitar el retroceso del historial del navegador
+            history.pushState(null, null, location.href);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, location.href);
+                alert('🚫 La navegación hacia atrás está bloqueada durante el pretest.');
+            });
+        };
+        // ------------------------------------
+        
+        function startQuiz() {
+            const name = document.getElementById('name').value.trim();
+            const course = document.getElementById('course').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const school = document.getElementById('school').value.trim();
+
+            if (name && course && age && school) {
+                document.getElementById('info-form').style.display = 'none';
+                document.getElementById('instructions').classList.add('active');
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
+
+        function showFirstQuestion() {
+            document.getElementById('instructions').classList.remove('active');
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('q1').classList.add('active');
+        }
+
+        function showNextButton(qNum) {
+            document.getElementById(`next-${qNum}`).style.display = 'block';
+        }
+
+        function nextQuestion(qNum) {
+            const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+            if (selected) {
+                answers[`q${qNum}`] = selected.value;
+            } else {
+                 alert('⚠️ Por favor, selecciona una respuesta antes de continuar.');
+                 return;
+            }
+
+            document.getElementById(`q${qNum}`).classList.remove('active');
+
+            if (qNum < TOTAL_QUESTIONS) {
+                currentQuestion = qNum + 1;
+                // Ocultar botón Siguiente y mostrar la nueva pregunta
+                document.getElementById(`next-${currentQuestion}`).style.display = 'none';
+                document.getElementById(`q${currentQuestion}`).classList.add('active');
+            } else {
+                // Última pregunta: Calcular y mostrar resultados
+                calculateScore();
+            }
+        }
+
+        function calculateScore() {
+            // Respuestas correctas actualizadas a las 15 preguntas finales (q1 a q15)
+            const correctAnswers = {
+                q1: 'b', q2: 'c', q3: 'b', q4: 'b', q5: 'a',
+                q6: 'a', q7: 'b', q8: 'b', q9: 'a', q10: 'a',
+                q11: 'a', q12: 'a', q13: 'c', q14: 'b', q15: 'c'
+            };
+
+            let score = 0;
+            let resultsDetail = [];
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const qKey = `q${i}`;
+                const userAnswer = answers[qKey] || 'No Respondida';
+                const isCorrect = userAnswer === correctAnswers[qKey];
+                
+                if (isCorrect) {
+                    score++;
+                }
+
+                resultsDetail.push({
+                    q: qKey,
+                    number: i,
+                    question: ALL_QUESTIONS_DATA.find(q => q.q === qKey).text,
+                    answered: userAnswer,
+                    isCorrect: isCorrect
+                });
+            }
+            
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const age = document.getElementById('age').value;
+            const school = document.getElementById('school').value;
+            const scoreText = `${score} / ${TOTAL_QUESTIONS}`;
+
+            // 1. Mostrar Retroalimentación Detallada en Pantalla
+            let tableHTML = '<table class="result-detail-table"><thead><tr><th>#</th><th>Operación</th><th>Tu Respuesta</th><th>Resultado</th></tr></thead><tbody>';
+            resultsDetail.forEach(item => {
+                const statusClass = item.isCorrect ? 'correct-answer' : 'incorrect-answer';
+                const statusText = item.isCorrect ? '✅ Correcto' : '❌ Incorrecto';
+                const userOptionText = item.answered !== 'No Respondida' ? `Opción ${item.answered.toUpperCase()}: ${getOptionText(item.q, item.answered)}` : item.answered;
+                
+                tableHTML += `
+                    <tr>
+                        <td>${item.number}</td>
+                        <td>${item.question}</td>
+                        <td>${userOptionText}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += '</tbody></table>';
+
+            document.getElementById('student-info').innerHTML = `Nombre: ${name} | Curso: ${course} | Edad: ${age} | Colegio: ${school}`;
+            document.getElementById('score').innerText = `Calificación Final: ${scoreText}`;
+            document.getElementById('detailed-results').innerHTML = tableHTML;
+            
+            // Almacenar el detalle de resultados para el correo
+            window.resultsDetail = resultsDetail; 
+            window.studentInfo = { name, course, age, school, scoreText };
+
+
+            // 2. Transición a la pantalla de resultados
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+        }
+        
+        // (3) Función para preparar el cuerpo del correo con la tabla de resultados detallada
+        function prepareMailBody() {
+            const info = window.studentInfo;
+            const detail = window.resultsDetail;
+
+            // Construcción del cuerpo del correo en texto plano para compatibilidad
+            let mailBody = `\nRESULTADOS DEL PRETEST DE MATEMÁTICAS\n`;
+            mailBody += `======================================\n\n`;
+            mailBody += `Estudiante: ${info.name}\n`;
+            mailBody += `Curso: ${info.course}\n`;
+            mailBody += `Edad: ${info.age}\n`;
+            mailBody += `Colegio: ${info.school}\n\n`;
+            mailBody += `CALIFICACIÓN FINAL: ${info.scoreText}\n\n`;
+            mailBody += `--- RETROALIMENTACIÓN DETALLADA ---\n`;
+            mailBody += ` # | Operación | Tu Respuesta | Resultado \n`;
+            mailBody += `---|-------------------|--------------|-----------\n`;
+            
+            detail.forEach(item => {
+                const status = item.isCorrect ? 'CORRECTO' : 'INCORRECTO';
+                const userOptionText = item.answered !== 'No Respondida' ? `Opción ${item.answered.toUpperCase()}: ${getOptionText(item.q, item.answered)}` : item.answered;
+                
+                // Limpiar el texto de la pregunta y la respuesta para el correo
+                const questionTextClean = item.question.replace(/<\/?span[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                const userOptionClean = userOptionText.replace(/<\/?span[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+
+                mailBody += ` ${item.number} | ${questionTextClean} | ${userOptionClean} | ${status}\n`;
+            });
+            
+            mailBody += `\n======================================\n`;
+            mailBody += `NOTA: Favor adjuntar el pantallazo de los resultados.\n`;
+
+            const subject = `Resultados Pretest Matemáticas - ${info.name} (${info.course})`;
+            const mailtoLink = `mailto:andres.5050@hotmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+
+            // Disparar el cliente de correo
+            window.location.href = mailtoLink;
+            
+            // Muestra la instrucción final
+            showThankYouMessage();
+        }
+
+        function showThankYouMessage() {
+            // Oculta el botón para evitar doble clic mientras se abre el cliente de correo
+            document.getElementById("submit-email-btn").style.display = 'none'; 
+            // Muestra la instrucción final
+            document.getElementById("thank-you-message").style.display = "block";
+        }
+
+    </script>
+</body>
+</html>
